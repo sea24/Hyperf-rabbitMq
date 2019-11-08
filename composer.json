@@ -1,0 +1,34 @@
+{
+    "name": "meiquick/swoft-rabbitmq",
+    "type": "library",
+    "keywords": [
+        "php",
+        "swoole",
+        "swoft",
+        "rpc",
+        "php-amqplib"
+    ],
+    "description": "基于swoft封装的rabbitmq连接池",
+    "license": "Apache-2.0",
+    "require": {
+        "swoft/framework": "~2.0.0",
+        "swoft/connection-pool": "~2.0.0",
+        "swoft/rpc": "~2.0.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "MeiQuick\\Swoft\\RabbitMq\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "SwoftTest\\Rpc\\Client\\Unit\\": "test/unit"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.5"
+    },
+    "scripts": {
+        "test": "php run.php -c phpunit.xml"
+    }
+}
