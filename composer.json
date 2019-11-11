@@ -13,7 +13,8 @@
     "require": {
         "swoft/framework": "~2.0.0",
         "swoft/connection-pool": "~2.0.0",
-        "swoft/rpc": "~2.0.0"
+        "swoft/rpc": "~2.0.0",
+        "php-amqplib/php-amqplib": "~2.10.0"
     },
     "autoload": {
         "psr-4": {
