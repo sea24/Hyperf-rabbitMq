@@ -103,7 +103,7 @@ class Publish
     public function executor(AbstractBuilder $builder, Closure $cb)
     {
         if (false === $this->builder($builder)->preprocess()) {
-            throw new RpcException("Message system busy, preprocess data failed");
+            throw new PublishException("Message system busy, preprocess data failed");
         }
         $res = $cb();
         if (false !== $res) {
