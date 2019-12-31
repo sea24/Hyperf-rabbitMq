@@ -8,7 +8,7 @@ use chan;
 use Closure;
 use Exception;
 use MeiQuick\Rpc\Lib\Message;
-use MeiQuick\Swoft\RabbitMq\Exception\ConsumerException;
+use MeiQuick\Swoft\RabbitMq\Exception\PublishException;
 use Swoft\Bean\Annotation\Mapping\Bean;
 use Swoft\Bean\Annotation\Mapping\Inject;
 use Swoft\Bean\Concern\PrototypeTrait;
@@ -84,7 +84,7 @@ class Publish
                 $this->deliverResult->push($deliverResult);
             } catch (\Throwable $e) {
                 $this->messageRedis->set(sprintf('master_message_job:%s', (string)$this->prepareMessage['msg_id']), 1);
-                throw new ConsumerException(sprintf('消息投递失败：[Message]:%s, [Params]:%s', $e->getMessage(), json_encode($this->prepareMessage)));
+                throw new PublishException(sprintf('消息投递失败：[Message]:%s, [Params]:%s', $e->getMessage(), json_encode($this->prepareMessage)));
             }
         });
     }
