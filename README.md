@@ -116,7 +116,9 @@ return [
     'test.consumer' => [
         'class' => \MeiQuick\Swoft\RabbitMq\Consumer\Consumer::class,
         'rabbit' => bean("rabbit.pool"),
-        'redis' => bean("messageRedis.pool"),  // redis配置的前缀必须是Message:（必须跟消息中间件的保持一致）
+        // redis配置的前缀必须是Message:（必须跟消息中间件的保持一致）
+        // 可以使用包预定义的配置（message.middleware.redis.pool）
+        'redis' => bean("message.middleware.redis.pool"),
         'exchangeName' => "test",  // 交换器
         'routeKey' => "/test",  // 路由键
         'queueName' => "test",  // 队列名称

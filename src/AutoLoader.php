@@ -5,7 +5,6 @@
 namespace MeiQuick\Swoft\RabbitMq;
 
 use MeiQuick\Swoft\RabbitMq\Connection\ConnectionManager;
-use Swoft\Rpc\Packet;
 use Swoft\SwoftComponent;
 
 /**
@@ -48,7 +47,22 @@ class AutoLoader extends SwoftComponent
             ],
             'connection.manager' => [
                 'class'   => ConnectionManager::class
-            ]
+            ],
+            'message.middleware.redis' => [
+                'class' => \Swoft\Redis\RedisDb::class,
+                'host' => env('REDIS_HOST'),
+                'port' => env('REDIS_PORT'),
+                'password' => env('REDIS_PASSWORD'),
+                'database' => 1,
+                'option' => [
+                    'prefix' => "Message:",
+                    'serializer' => \Redis::SERIALIZER_NONE
+                ]
+            ],
+            'message.middleware.redis.pool' => [
+                'class' => \Swoft\Redis\Pool::class,
+                'redisDb' => bean('message.middleware.redis'),
+            ],
         ];
     }
 }
