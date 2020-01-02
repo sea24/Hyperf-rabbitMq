@@ -6,7 +6,6 @@ namespace MeiQuick\Swoft\RabbitMq\Publish;
 
 use chan;
 use Closure;
-use Exception;
 use MeiQuick\Rpc\Lib\Message;
 use MeiQuick\Swoft\RabbitMq\Exception\PublishException;
 use Swoft\Bean\Annotation\Mapping\Bean;
@@ -14,7 +13,6 @@ use Swoft\Bean\Annotation\Mapping\Inject;
 use Swoft\Bean\Concern\PrototypeTrait;
 use Swoft\Redis\Pool;
 use Swoft\Rpc\Client\Annotation\Mapping\Reference;
-use Swoft\Rpc\Exception\RpcException;
 
 /**
  * Class Publish
@@ -32,7 +30,7 @@ class Publish
     private $message;
 
     /**
-     * @Inject(name="messageRedis.pool")
+     * @Inject(name="message.middleware.redis.pool")
      * @var Pool
      */
     private $messageRedis;
@@ -59,23 +57,39 @@ class Publish
         return $self;
     }
 
+    /**
+     * 设置预处理消息
+     * @param AbstractBuilder $builder
+     * @return $this
+     */
     public function builder(AbstractBuilder $builder)
     {
         $this->prepareMessage = $builder->getData();
         return $this;
     }
 
+    /**
+     * 发送预处理消息
+     * @return bool
+     */
     public function preprocess(): bool
     {
         $this->preprocessResult = $this->message->prepareMsg($this->prepareMessage);
         return ((int)$this->preprocessResult['status'] === 1) ? true : false;
     }
 
+    /**
+     * 获取预处理消息原始返回
+     * @return array
+     */
     public function getPreprocessResult(): array
     {
         return $this->preprocessResult;
     }
 
+    /**
+     * 投递消息
+     */
     public function deliver(): void
     {
         sgo(function () {
@@ -89,6 +103,10 @@ class Publish
         });
     }
 
+    /**
+     * 获取投递结果
+     * @return array
+     */
     public function getDeliverResult(): array
     {
         return $this->deliverResult->pop();
@@ -96,9 +114,9 @@ class Publish
 
     /**
      * @param AbstractBuilder $builder
-     * @param $cb
+     * @param Closure $cb
      * @return mixed
-     * @throws Exception
+     * @throws PublishException
      */
     public function executor(AbstractBuilder $builder, Closure $cb)
     {
