@@ -1,4 +1,4 @@
-# meiquick Rpc-Lib
+# Rpc-Lib
 基于swoft封装的rabbitmq连接池
 
 ## 使用需知
